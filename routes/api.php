@@ -22,7 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //except: chạy tất cả ngoại trừ các phương thức này
 // Route::resource('customer', 'CustomerController')->except(['edit','create']);
 
-Route::resource('customer', 'CustomerController')->only(['index','show','update','delete','store']);
+
+// Route::resource('customer', 'CustomerController')->only(['index','show','update','delete','store']);
 
 //version
 //version api v1
