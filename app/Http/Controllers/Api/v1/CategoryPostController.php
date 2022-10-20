@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
 use App\CategoryPost;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Session;
 
 class CategoryPostController extends Controller
 {
@@ -14,7 +17,8 @@ class CategoryPostController extends Controller
      */
     public function index()
     {
-        //
+        $category = CategoryPost::all();
+        return view('layouts.category.index')->with(compact('category'));
     }
 
     /**
@@ -24,7 +28,7 @@ class CategoryPostController extends Controller
      */
     public function create()
     {
-        //
+        return view('layouts.category.create');
     }
 
     /**
@@ -35,7 +39,11 @@ class CategoryPostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new CategoryPost();
+        $category->title = $request->title;
+        $category->short_desc = $request->short_desc;
+        $category->save();
+        return redirect()->route('category.index')->with('success', 'Category Inserted Successfully');
     }
 
     /**
@@ -44,9 +52,10 @@ class CategoryPostController extends Controller
      * @param  \App\CategoryPost  $categoryPost
      * @return \Illuminate\Http\Response
      */
-    public function show(CategoryPost $categoryPost)
+    public function show($categoryPost)
     {
-        //
+        $category = CategoryPost::find($categoryPost);
+        return view('layouts.category.show')->with(compact('category'));
     }
 
     /**
@@ -67,9 +76,14 @@ class CategoryPostController extends Controller
      * @param  \App\CategoryPost  $categoryPost
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CategoryPost $categoryPost)
+    public function update(Request $request, $categoryPost)
     {
-        //
+        $data = $request->all();
+        $category = CategoryPost::find($categoryPost);
+        $category->title = $data['title'];
+        $category->short_desc = $request->short_desc;
+        $category->save();
+        return redirect()->route('category.index')->with('success', 'Category Updated Successfully');
     }
 
     /**
@@ -78,8 +92,10 @@ class CategoryPostController extends Controller
      * @param  \App\CategoryPost  $categoryPost
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CategoryPost $categoryPost)
+    public function destroy($categoryPost)
     {
-        //
+        $category = CategoryPost::find($categoryPost);
+        $category->delete();
+        return redirect()->back();
     }
 }

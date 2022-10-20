@@ -31,6 +31,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function(){
     Route::resource('customer', 'Api\v1\CustomerController')->only(['index','show','update','delete','store']);
+
+    Route::resource('category', 'Api\v1\CategoryPostController');
+
+    Route::resource('post', 'Api\v1\PostController');
+
+    Route::resource('bai-viet', 'Api\v1\BaivietController');
+
+    Route::resource('danh-muc', 'Api\v1\DanhmucController');
+
 });
 
 //version api v2

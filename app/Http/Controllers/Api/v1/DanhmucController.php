@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\CategoryPost;
+use App\Post;
 
-class BaivietController extends Controller
+class DanhmucController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -45,7 +48,17 @@ class BaivietController extends Controller
      */
     public function show($id)
     {
-        return view('pages.details');
+        $category_post = Post::with('category')->where('post_category_id',$id)->orderBy('id','DESC')->paginate(2);
+
+        $category = CategoryPost::all();
+
+        $title_category = CategoryPost::find($id);
+
+        $viewest_post = Post::with('category')->orderBy('views','DESC')->where('post_category_id',$id)->limit(5)->get();
+
+        $category_recomment = CategoryPost::whereNotIn('id',[$id])->get();
+
+        return view('pages.category')->with(compact('category','category_post','title_category','viewest_post','category_recomment'));
     }
 
     /**
